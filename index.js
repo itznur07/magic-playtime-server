@@ -8,8 +8,8 @@ const { MongoClient, ServerApiVersion } = require("mongodb");
 /** Middlewares here */
 const corsConfig = {
   origin: "*",
-  Credential: true,
-  method: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  credential: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
 };
 
 app.use(cors(corsConfig));
