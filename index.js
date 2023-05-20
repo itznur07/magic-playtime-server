@@ -3,6 +3,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 const cors = require("cors");
 require("dotenv").config();
+const { MongoClient, ServerApiVersion } = require("mongodb");
 
 /** Middlewares here */
 app.use(cors());
@@ -10,8 +11,6 @@ app.use(express.json());
 /** Middlewares ends here */
 
 /** MongoDB Database Connection */
-
-const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@todos.ukwfq5e.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -26,9 +25,18 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    // await client.connect();
 
-    
+    const categoryCollection = client
+      .db("Categorys")
+      .collection("toycategorys");
+
+    /** Data Oparetions */
+
+    /** Shop By Category GET */
+    app.get("/categorys", async (req, res) => {
+      const result = await categoryCollection.find().toArray();
+      res.send(result);
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
@@ -40,7 +48,7 @@ async function run() {
     // await client.close();
   }
 }
-run().catch(console.dir);
 
+run().catch(console.dir);
 app.get("/", (req, res) => res.send("Toy marketplace server running!"));
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
