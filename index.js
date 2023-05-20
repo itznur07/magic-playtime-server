@@ -1,18 +1,12 @@
 const express = require("express");
 const app = express();
-const port = process.env.PORT || 3000;
 const cors = require("cors");
+const port = process.env.PORT || 3000;
 require("dotenv").config();
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 /** Middlewares here */
-const corsConfig = {
-  origin: "*",
-  credential: true,
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-};
-
-app.use(cors(corsConfig));
+app.use(cors());
 app.use(express.json());
 /** Middlewares ends here */
 
@@ -32,15 +26,23 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
 
-    const categoryCollection = client
-      .db("Categorys")
-      .collection("toycategorys");
+    const carCollection = client.db("Categorys").collection("cartoys");
+    const sportsCollection = client.db("Categorys").collection("sportstoys");
+    const dollCollection = client.db("Categorys").collection("dolltoys");
 
     /** Data Oparetions */
 
     /** Shop By Category GET */
-    app.get("/categorys", async (req, res) => {
-      const result = await categoryCollection.find().toArray();
+    app.get("/cartoys", async (req, res) => {
+      const result = await carCollection.find().toArray();
+      res.send(result);
+    });
+    app.get("/sportstoys", async (req, res) => {
+      const result = await sportsCollection.find().toArray();
+      res.send(result);
+    });
+    app.get("/dolltoys", async (req, res) => {
+      const result = await dollCollection.find().toArray();
       res.send(result);
     });
 
