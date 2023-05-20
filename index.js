@@ -6,7 +6,8 @@ require("dotenv").config();
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 /** Middlewares here */
-app.use(cors());
+
+app.use(cors("*"));
 app.use(express.json());
 /** Middlewares ends here */
 
@@ -43,6 +44,26 @@ async function run() {
     });
     app.get("/dolltoys", async (req, res) => {
       const result = await dollCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.get("/cartoys/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await carCollection.findOne(query);
+      res.send(result);
+    });
+
+    app.get("/sportstoys/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await sportsCollection.findOne(query);
+      res.send(result);
+    });
+    app.get("/dolltoys/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await dollCollection.findOne(query);
       res.send(result);
     });
 
