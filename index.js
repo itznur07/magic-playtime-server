@@ -36,7 +36,7 @@ async function run() {
     /** Shop By Category GET */
 
     app.get("/alltoys", async (req, res) => {
-      const result = await carCollection.find().toArray();
+      const result = await allToysCollection.find().toArray();
       res.send(result);
     });
 
