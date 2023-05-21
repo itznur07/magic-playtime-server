@@ -31,12 +31,18 @@ async function run() {
     const sportsCollection = client.db("Categorys").collection("sportstoys");
     const dollCollection = client.db("Categorys").collection("dolltoys");
     const allToysCollection = client.db("Categorys").collection("alltoys");
+    const myToysCollection = client.db("Categorys").collection("mytoys");
 
     /** Data Oparetions */
     /** Shop By Category GET */
 
     app.get("/alltoys", async (req, res) => {
       const result = await allToysCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.get("/mytoys", async (req, res) => {
+      const result = await myToysCollection.find().toArray();
       res.send(result);
     });
 
