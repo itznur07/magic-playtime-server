@@ -46,6 +46,12 @@ async function run() {
       res.send(result);
     });
 
+    app.post("/mytoys", async (req, res) => {
+      const toyData = req.body;
+      const result = await myToysCollection.insertOne(toyData);
+      res.send(result);
+    });
+
     app.get("/cartoys", async (req, res) => {
       const result = await carCollection.find().toArray();
       res.send(result);
