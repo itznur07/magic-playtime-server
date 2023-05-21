@@ -30,10 +30,16 @@ async function run() {
     const carCollection = client.db("Categorys").collection("cartoys");
     const sportsCollection = client.db("Categorys").collection("sportstoys");
     const dollCollection = client.db("Categorys").collection("dolltoys");
-    const galleryCollection = client.db("Categorys").collection("gallerydata");
+    const allToysCollection = client.db("Categorys").collection("alltoys");
 
     /** Data Oparetions */
     /** Shop By Category GET */
+
+    app.get("/alltoys", async (req, res) => {
+      const result = await carCollection.find().toArray();
+      res.send(result);
+    });
+
     app.get("/cartoys", async (req, res) => {
       const result = await carCollection.find().toArray();
       res.send(result);
@@ -44,11 +50,6 @@ async function run() {
     });
     app.get("/dolltoys", async (req, res) => {
       const result = await dollCollection.find().toArray();
-      res.send(result);
-    });
-
-    app.get("/gallerydata", async (req, res) => {
-      const result = await galleryCollection.find().toArray();
       res.send(result);
     });
 
