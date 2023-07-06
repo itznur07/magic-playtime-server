@@ -32,6 +32,8 @@ async function run() {
     const dollCollection = client.db("Categorys").collection("dolltoys");
     const allToysCollection = client.db("Categorys").collection("alltoys");
     const myToysCollection = client.db("Categorys").collection("mytoys");
+    const productsCollection = client.db("Categorys").collection("products");
+    const blogsCollection = client.db("Categorys").collection("blogs");
 
     /** Data Oparetions */
     /** Shop By Category GET */
@@ -43,6 +45,16 @@ async function run() {
 
     app.get("/mytoys", async (req, res) => {
       const result = await myToysCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.get("/products", async (req, res) => {
+      const result = await productsCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.get("/blogs", async (req, res) => {
+      const result = await blogsCollection.find().toArray();
       res.send(result);
     });
 
