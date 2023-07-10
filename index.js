@@ -34,6 +34,7 @@ async function run() {
     const myToysCollection = client.db("Categorys").collection("mytoys");
     const productsCollection = client.db("Categorys").collection("products");
     const blogsCollection = client.db("Categorys").collection("blogs");
+    const cartsCollection = client.db("Categorys").collection("carts");
 
     /** Data Oparetions */
     /** Shop By Category GET */
@@ -61,6 +62,12 @@ async function run() {
     app.post("/mytoys", async (req, res) => {
       const toyData = req.body;
       const result = await myToysCollection.insertOne(toyData);
+      res.send(result);
+    });
+
+    app.post("/carts", async (req, res) => {
+      const product = req.body;
+      const result = await cartsCollection.insertOne(product);
       res.send(result);
     });
 
