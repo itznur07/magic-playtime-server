@@ -35,6 +35,7 @@ async function run() {
     const productsCollection = client.db("Categorys").collection("products");
     const blogsCollection = client.db("Categorys").collection("blogs");
     const cartsCollection = client.db("Categorys").collection("carts");
+    const wishlistsCollection = client.db("Categorys").collection("wishlists");
 
     /** Data Oparetions */
     /** Shop By Category GET */
@@ -67,8 +68,26 @@ async function run() {
 
     app.post("/carts", async (req, res) => {
       const product = req.body;
-      const result = await cartsCollection.insertOne(product);
-      res.send(result);
+      const existData = cartsCollection.findOne(product);
+      if (!existData) {
+        const result = await cartsCollection.insertOne(product);
+        res.send(result);
+      } else {
+        res.status(400).json({ message: "Data already exists" });
+        return;
+      }
+    });
+
+    app.post("/wishlists", async (req, res) => {
+      const product = req.body;
+      const existData = await wishlistsCollection.findOne(product);
+      if (!existData) {
+        const result = await wishlistsCollection.insertOne(product);
+        res.send(result);
+      } else {
+        res.status(400).json({ message: "Data already exists" });
+        return;
+      }
     });
 
     app.put("/mytoys/:id", async (req, res) => {
