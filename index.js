@@ -50,6 +50,16 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/carts", async (req, res) => {
+      const result = await cartsCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.get("/wishlists", async (req, res) => {
+      const result = await wishlistsCollection.find().toArray();
+      res.send(result);
+    });
+
     app.get("/products", async (req, res) => {
       const result = await productsCollection.find().toArray();
       res.send(result);
@@ -68,7 +78,7 @@ async function run() {
 
     app.post("/carts", async (req, res) => {
       const product = req.body;
-      const existData = cartsCollection.findOne(product);
+      const existData = await cartsCollection.findOne(product);
       if (!existData) {
         const result = await cartsCollection.insertOne(product);
         res.send(result);
@@ -117,6 +127,13 @@ async function run() {
       const result = await myToysCollection.deleteOne(query);
       res.send(result);
     });
+
+    app.delete("/carts/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await cartsCollection.deleteOne(query);
+      res.send(result);
+    }); 
 
     app.get("/cartoys", async (req, res) => {
       const result = await carCollection.find().toArray();
