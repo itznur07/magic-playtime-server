@@ -133,7 +133,14 @@ async function run() {
       const query = { _id: new ObjectId(id) };
       const result = await cartsCollection.deleteOne(query);
       res.send(result);
-    }); 
+    });
+
+    app.delete("/wishlists/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await wishlistsCollection.deleteOne(query);
+      res.send(result);
+    });
 
     app.get("/cartoys", async (req, res) => {
       const result = await carCollection.find().toArray();
