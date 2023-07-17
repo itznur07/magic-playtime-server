@@ -76,6 +76,19 @@ async function run() {
       res.send(result);
     });
 
+    app.post("/products", async (req, res) => {
+      const product = req.body;
+      const exisData = await productsCollection.findOne(product);
+
+      if (!exisData) {
+        const result = await productsCollection.insertOne(product);
+        res.send(result);
+      } else {
+        res.status(400).json({ meesage: "Data already exists" });
+        return;
+      }
+    });
+
     app.post("/carts", async (req, res) => {
       const product = req.body;
       const existData = await cartsCollection.findOne(product);
