@@ -56,13 +56,6 @@ async function run() {
       res.send(result);
     });
 
-    app.delete("/carts/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: new ObjectId(id) };
-      const result = await cartsCollection.deleteOne(query);
-      res.send(result);
-    });
-
     app.get("/wishlists", async (req, res) => {
       const result = await wishlistsCollection.find().toArray();
       res.send(result);
@@ -103,7 +96,6 @@ async function run() {
       }
     });
 
-    // remove data from compare collection
     app.delete("/compares/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
