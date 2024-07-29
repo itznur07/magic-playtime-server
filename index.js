@@ -36,6 +36,7 @@ async function run() {
     const blogsCollection = client.db("Categorys").collection("blogs");
     const cartsCollection = client.db("Categorys").collection("carts");
     const wishlistsCollection = client.db("Categorys").collection("wishlists");
+    const compareCollection = client.db("Categorys").collection("compares");
 
     /** Data Oparetions */
     /** Shop By Category GET */
@@ -80,6 +81,38 @@ async function run() {
     app.post("/mytoys", async (req, res) => {
       const toyData = req.body;
       const result = await myToysCollection.insertOne(toyData);
+      res.send(result);
+    });
+
+    app.post("/compares", async (req, res) => {
+      const compareData = req.body;
+      const compareDatas = await compareCollection.find().toArray();
+      const existData = await compareCollection.findOne(compareData);
+
+      if (compareDatas.length > 3) {
+        res.status(400).json({ message: "Compare list limit exceeded" });
+        return;
+      }
+
+      if (!existData) {
+        const result = await compareCollection.insertOne(compareData);
+        res.send(result);
+      } else {
+        res.status(400).json({ message: "Data already exists" });
+        return;
+      }
+    });
+
+    // remove data from compare collection
+    app.delete("/compares/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await compareCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    app.get("/compares", async (req, res) => {
+      const result = await compareCollection.find().toArray();
       res.send(result);
     });
 
